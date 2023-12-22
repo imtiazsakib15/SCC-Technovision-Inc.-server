@@ -24,6 +24,20 @@ async function run() {
   try {
     // await client.connect();
 
+    const usersCollection = client.db("Scc-Tech").collection("users");
+
+    //   Post users to database
+    app.post("/users", async (req, res) => {
+      try {
+        const user = req.body;
+        const result = await usersCollection.insertOne(user);
+        res.send(result);
+      } catch (error) {
+        res
+          .status(500)
+          .send({ success: false, error: "Internal Server Error" });
+      }
+    });
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
