@@ -25,6 +25,7 @@ async function run() {
     // await client.connect();
 
     const usersCollection = client.db("Scc-Tech").collection("users");
+    const tasksCollection = client.db("Scc-Tech").collection("tasks");
 
     //   Post users to database
     app.post("/users", async (req, res) => {
@@ -38,6 +39,18 @@ async function run() {
           .send({ success: false, error: "Internal Server Error" });
       }
     });
+    // post tasks to database
+    app.post("/tasks", async(req, res) => {
+      try {
+        const task = req.body;
+        const result = await tasksCollection.insertOne(task);
+        res.send(result);
+      } catch (error) {
+        res
+          .status(500)
+          .send({ success: false, error: "Internal Server Error" });
+      }
+    })
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
